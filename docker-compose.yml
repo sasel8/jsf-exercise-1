@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  glassfish:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8080"
+      - "4848:4848"
+    networks:
+      - mynetwork
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - glassfish
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
